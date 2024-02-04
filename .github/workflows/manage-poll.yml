@@ -9,18 +9,17 @@ jobs:
     env:
       DAYS_ADDITION: 21
     steps:
-      steps:
 
-        - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-        - uses: actions/setup-python@v5
-          with:
-            python-version: '3.7'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.7'
 
-        - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt
 
-        - name: Add new dates to poll
-          run: framadatectl --url ${{ secrets.FRAMADATE_ADMIN_URL }} add slot $(date -d "next sat + $DAYS_ADDITION day" +%Y-%m-%d)
+      - name: Add new dates to poll
+        run: framadatectl --url ${{ secrets.FRAMADATE_ADMIN_URL }} add slot $(date -d "next sat + $DAYS_ADDITION day" +%Y-%m-%d) ""
 
-        - name: Remove old dates from poll
-          run: framadatectl --url ${{ secrets.FRAMADATE_ADMIN_URL }} delete old-slots
+      - name: Remove old dates from poll
+        run: framadatectl --url ${{ secrets.FRAMADATE_ADMIN_URL }} delete old-slots

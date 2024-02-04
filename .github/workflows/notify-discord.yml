@@ -1,21 +1,20 @@
 on:
-  schedule:
-    - cron: '32 16 * * 4'
+  #schedule:
+  #  - cron: '32 16 * * 4'
   workflow_dispatch:
 
 jobs:
   notify-discord:
     runs-on: ubuntu-latest
     steps:
-      steps:
 
-        - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-        - uses: actions/setup-python@v5
-          with:
-            python-version: '3.7'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.7'
 
-        - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt
 
-        - name: Check if 2 or more participants
-          run: framadatectl --url ${{ secrets.FRAMADATE_ADMIN_URL }} --min-votes=2 check next-slot
+      - name: Check if 2 or more participants
+        run: framadatectl --url ${{ secrets.FRAMADATE_ADMIN_URL }} --min-votes=2 check next-slot

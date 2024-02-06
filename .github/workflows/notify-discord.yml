@@ -1,6 +1,6 @@
 on:
-  #schedule:
-  #  - cron: '32 16 * * 4'
+  schedule:
+    - cron: '32 16 * * 4'
   workflow_dispatch:
 
 jobs:
@@ -16,5 +16,8 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - name: Check if 2 or more participants
-        run: framadatectl --url ${{ secrets.FRAMADATE_ADMIN_URL }} --min-votes=2 check next-slot
+      - run: |
+          VOTES=$(framadatectl --url ${{ secrets.FRAMADATE_ADMIN_URL }} show next-slot)
+          MAP='${{ secrets.DISCORD_USERNAME_MAP }}'
+          USERS=$(./parse-votes.sh "$VOTES" "$MAP")
+          curl --header "Content-Type: application/json" --data "{\"username\": \"Your weekly hoppy game day reminder\", \"content\": \"${USERS}you are signed up for next Saturday! May the dice gods be with you :game_die:\"}" ${{ secrets.DISCORD_WEBHOOK_URL }}

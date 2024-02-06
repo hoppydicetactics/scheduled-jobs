@@ -24,7 +24,7 @@ Collection of jobs executed regularly to automate different tasks.
 **Requirements:**
 - Repository/organization secret
   - Key: `DISCORD_USERNAME_MAP`
-  - Value: See [#discord-username-map]
+  - Value: See [#discord-username-map](Discord username map)
 - Repository/organization secret
   - Key: `DISCORD_WEBHOOK_URL`
   - Value: As the key suggests

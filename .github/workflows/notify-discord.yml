@@ -20,4 +20,4 @@ jobs:
           VOTES=$(framadatectl --url ${{ secrets.FRAMADATE_ADMIN_URL }} show next-slot)
           MAP='${{ secrets.DISCORD_USERNAME_MAP }}'
           USERS=$(./parse-votes.sh "$VOTES" "$MAP")
-          curl --header "Content-Type: application/json" --data "{\"username\": \"Your weekly hoppy game day reminder\", \"content\": \"${USERS}you are signed up for next Saturday! May the dice gods be with you :game_die:\"}" ${{ secrets.DISCORD_WEBHOOK_URL }}
+          curl --header "Content-Type: application/json" --data "{\"username\": \"Greater Good Gathering Guide\", \"content\": \"${USERS}you are signed up for Saturday! Would anyone else want to join? In any case, may the dice gods be with you! :game_die:\"}" ${{ secrets.DISCORD_WEBHOOK_URL }}

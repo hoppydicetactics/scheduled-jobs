@@ -4,20 +4,41 @@ on:
   workflow_dispatch:
 
 jobs:
-  notify-discord:
+  parse-votes:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Setup python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.7'
 
-      - run: pip install -r requirements.txt
+      - name: Install requirements
+        run: pip install -r requirements.txt
 
-      - run: |
+      - name: Parse votes
+        id: parse-votes
+        run: |
           VOTES=$(framadatectl --url ${{ secrets.FRAMADATE_ADMIN_URL }} show next-slot)
           MAP='${{ secrets.DISCORD_USERNAME_MAP }}'
           USERS=$(./parse-votes.sh "$VOTES" "$MAP")
-          curl --header "Content-Type: application/json" --data "{\"username\": \"Greater Good Gathering Guide\", \"content\": \"${USERS}you are signed up for Saturday! Would anyone else want to join? Unless someone writes something else, meeting point is around 12:00 at acend. May the dice gods be with you! :game_die:\"}" ${{ secrets.DISCORD_WEBHOOK_URL }}
+          echo "users=${USERS}">> "$GITHUB_OUTPUT"
+    outputs:
+      users: ${{ steps.parse-votes.outputs.users }}
+
+  notify-discord:
+    runs-on: ubuntu-latest
+    needs: parse-votes
+    steps:
+
+      - name: Notify Discord channel
+        if: ${{ needs.parse-votes.outputs.users != ', ' }}
+        env:
+          DISCORD_USERNAME: Greater Good Gathering Guide
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          USERS: ${{ needs.parse-votes.outputs.users }}
+        run: |
+          curl --header "Content-Type: application/json" --data "{\"username\": \"${DISCORD_USERNAME}\", \"content\": \"${USERS}you are signed up for Saturday! Would anyone else want to join? Unless someone writes something else, meeting point is at 12:00 at acend. May the dice gods be with you! :game_die:\"}" ${DISCORD_WEBHOOK_URL}

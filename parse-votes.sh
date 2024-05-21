@@ -22,8 +22,6 @@ then
       USERS+=("${PARTICIPANT}")
     fi
   done
-else
-  exit 1
 fi  
 
 printf '%s, ' "${USERS[@]}"

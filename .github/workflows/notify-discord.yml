@@ -41,4 +41,4 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           USERS: ${{ needs.parse-votes.outputs.users }}
         run: |
-          curl --header "Content-Type: application/json" --data "{\"username\": \"${DISCORD_USERNAME}\", \"content\": \"${USERS}you are signed up for Saturday! Would anyone else want to join? Unless someone writes something else, meeting point is at 12:00 at acend. May the dice gods be with you! :game_die:\"}" ${DISCORD_WEBHOOK_URL}
+          curl --header "Content-Type: application/json" --data "{\"username\": \"${DISCORD_USERNAME}\", \"content\": \"${USERS}you are signed up for Saturday! Would anyone else want to join? Unless someone writes something else, meeting point is at 12:00 with 2000 points lists. May the dice gods be with you! :game_die:\"}" ${DISCORD_WEBHOOK_URL}

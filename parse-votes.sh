@@ -7,7 +7,8 @@ declare -a USERS
 # Transform string into array containing participants
 VOTES=${VOTES#*[}
 VOTES=${VOTES%]*}
-IFS=', ' read -ra PARTICIPANTS <<< "$VOTES"
+VOTES=${VOTES//, /,}
+IFS=',' read -ra PARTICIPANTS <<< "$VOTES"
 
 # Map and return participants if more than 1
 if [[ ${#PARTICIPANTS[@]} -gt 1 ]]
